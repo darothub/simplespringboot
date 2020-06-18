@@ -4,11 +4,8 @@ import com.darot.firstjavaspringboot.dao.PersonDao;
 import com.darot.firstjavaspringboot.model.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.stereotype.Repository;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -28,8 +25,10 @@ public class PersonDataAccessService implements PersonDao {
 
     @Override
     public int insertPerson(UUID id, Person person) {
-        DB.add(new Person(id, person.getName()));
-        return 1;
+        final String insertSql = "INSERT INTO person(id, name) VALUES(?, ?)";
+        return jdbcTemplate.update(insertSql, id, person.getName());
+//        DB.add(new Person(id, person.getName()));
+//        return 1;
     }
 
     @Override
